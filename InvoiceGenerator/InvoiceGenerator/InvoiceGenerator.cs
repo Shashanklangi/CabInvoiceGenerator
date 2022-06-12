@@ -11,7 +11,9 @@ namespace CabInvoiceGenerator
         readonly int pricePerKilometer;
         readonly int pricePerMinute;
         readonly int minimumFare;
-        public double totalFare;
+        public double TotalFare;
+        public int numOfRides;
+        public double averagePerRide;
         public InvoiceGenerator()
         {
             this.pricePerKilometer = 10;
@@ -30,6 +32,16 @@ namespace CabInvoiceGenerator
                 throw new InvoiceGeneratorException(InvoiceGeneratorException.ExceptionType.INVALID_TIME, "Invalid Time encounter");
             }
             return Math.Max(minimumFare, ride.distance * pricePerKilometer + ride.time * pricePerMinute);
+        }
+        public double TotalFareForMultipleRideReturn(List<Ride> rides)
+        {
+            foreach (Ride ride in rides)
+            {
+                TotalFare += TotalFareForSingleRiderreturn(ride);
+                numOfRides += 1;
+            }
+            averagePerRide = TotalFare / numOfRides;
+            return TotalFare;
         }
     }
 }
